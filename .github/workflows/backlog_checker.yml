@@ -1,0 +1,55 @@
+---
+name: Backlog Limits Checker
+on:
+  schedule:
+  - cron: '*/10 * * * *'
+
+jobs:
+  check_suse_qa_tools_backlog_limits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: check overall backlog length
+        if: always()
+        run: |
+          python backlog_checker.py
+        env:
+          key: ${{ secrets.REDMINE_API_KEY }}
+          fun: "gha_overall"
+      - name: check workable backlog length
+        if: always()
+        run: |
+          python backlog_checker.py
+        env:
+          key: ${{ secrets.REDMINE_API_KEY }}
+          fun: "gha_workable"
+      - name: check issues exceeding due date
+        if: always()
+        run: |
+          python backlog_checker.py
+        env:
+          key: ${{ secrets.REDMINE_API_KEY }}
+          fun: "gha_exceed_due_date"
+      - name: check untriaged 'tools' tagged issues
+        if: always()
+        run: |
+          python backlog_checker.py
+        env:
+          key: ${{ secrets.REDMINE_API_KEY }}
+          fun: "gha_untriaged_tools"
+      - name: check untriaged issues
+        if: always()
+        run: |
+          python backlog_checker.py
+        env:
+          key: ${{ secrets.REDMINE_API_KEY }}
+          fun: "gha_untriaged_tools"
