@@ -81,7 +81,7 @@ def gha_workable():
 # Issues exceeding due date
 def gha_exceed_due_date():
     key = os.environ['key']
-    today = str((datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d'))
+    today = str(datetime.today().strftime('%Y-%m-%d'))
     answer = requests.get("https://progress.opensuse.org/issues.json?fixed_version_id=418"
                           + "&status_id=!3|5|6&due_date=%3C%3D" + today + "&key=" + key)
     root = json.loads(answer.content)
