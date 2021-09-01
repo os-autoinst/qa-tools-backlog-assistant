@@ -23,7 +23,7 @@ def initialize_md():
     with open("index.md", "a") as md:
         md.write("# Backlog Status\n\n")
         md.write("**Latest Run:** " + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " GMT\n")
-        md.write("*(Please refresh to see latest results)*\n")
+        md.write("*(Please refresh to see latest results)*\n\n")
         md.write("Backlog Query | Number of Issues | Limits | Status\n--- | --- | --- | ---\n")
 
 
