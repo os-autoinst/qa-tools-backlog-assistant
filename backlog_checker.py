@@ -37,8 +37,7 @@ def results_to_md(item, number, limits, status):
 def gha_overall():
     key = os.environ['key']
 
-    answer = requests.get("https://progress.opensuse.org/issues.json?fixed_version_id=418"
-                          + "&key=" + key)
+    answer = requests.get("https://progress.opensuse.org/issues.json?query_id=230&key=" + key)
     root = json.loads(answer.content)
     issue_count = int(root["total_count"])
     if issue_count > 100:
@@ -55,8 +54,7 @@ def gha_overall():
 # Workable backlog length check
 def gha_workable():
     key = os.environ['key']
-    answer = requests.get("https://progress.opensuse.org/issues.json?fixed_version_id=418"
-                          + "&status_id=12\&key=" + key)
+    answer = requests.get("https://progress.opensuse.org/issues.json?query_id=478&key=" + key)
     root = json.loads(answer.content)
     issue_count = int(root["total_count"])
     backlog_ok = False
@@ -81,9 +79,7 @@ def gha_workable():
 # Issues exceeding due date
 def gha_exceed_due_date():
     key = os.environ['key']
-    today = str(datetime.today().strftime('%Y-%m-%d'))
-    answer = requests.get("https://progress.opensuse.org/issues.json?fixed_version_id=418"
-                          + "&status_id=!3|5|6&due_date=%3C%3D" + today + "&key=" + key)
+    answer = requests.get("https://progress.opensuse.org/issues.json?query_id=514&key=" + key)
     root = json.loads(answer.content)
     issue_count = int(root["total_count"])
     if issue_count > 0:
@@ -109,25 +105,20 @@ def gha_exceed_due_date():
 # Untriaged issues
 def gha_untriaged_qa():
     key = os.environ['key']
-    answer_qa = requests.get("https://progress.opensuse.org/issues.json?project_id=18&"
-                            + "fixed_version_id=!*&key=" + key)
-    answer_qap = requests.get("https://progress.opensuse.org/issues.json?project_id=125&"
-                              + "fixed_version_id=!*&key=" + key)
-    root = json.loads(answer_qa.content)
-    root_p = json.loads(answer_qap.content)
-    issue_count = int(root["total_count"]) + int(root_p["total_count"])
+    answer = requests.get("https://progress.opensuse.org/issues.json?"
+                          + "query_id=576&project_id=115&key=" + key)
+    root = json.loads(answer.content)
+    issue_count = int(root["total_count"])
     if issue_count > 0:
         print("There are untriaged tickets!")
         try:
             for poo in root['issues']:
                 print("https://progress.opensuse.org/issues/" + str(poo['id']))
-            for poo in root_p['issues']:
-                print("https://progress.opensuse.org/issues/" + str(poo['id']))
         except Exception:
             print(
                 "Please check https://progress.opensuse.org/projects/qa/issues?query_id=576")
         else:
-            if issue_count > len(root['issues']) + len(root_p['issues']):
+            if issue_count > len(root['issues']):
                 print("there are more issues, check https://progress.opensuse.org/issues?"
                       + "query_id=576")
         results_to_md(query_links["Untriaged QA"], str(issue_count), "<1",
@@ -141,25 +132,19 @@ def gha_untriaged_qa():
 # Untriaged 'tools' tagged issues
 def gha_untriaged_tools():
     key = os.environ['key']
-    answer_qa = requests.get("https://progress.opensuse.org/issues.json?project_id=18&"
-                             + "fixed_version_id=!*&subject=~[tools]&key=" + key)
-    answer_qap = requests.get("https://progress.opensuse.org/issues.json?project_id=125&"
-                              + "fixed_version_id=!*&subject=~tools&key=" + key)
-    root = json.loads(answer_qa.content)
-    root_p = json.loads(answer_qap.content)
-    issue_count = int(root["total_count"]) + int(root_p["total_count"])
+    answer = requests.get("https://progress.opensuse.org/issues.json?query_id=481&key=" + key)
+    root = json.loads(answer.content)
+    issue_count = int(root["total_count"])
     if issue_count > 0:
         print("There are untriaged tools tagged tickets!")
         try:
             for poo in root['issues']:
                 print("https://progress.opensuse.org/issues/" + str(poo['id']))
-            for poo in root_p['issues']:
-                print("https://progress.opensuse.org/issues/" + str(poo['id']))
         except Exception:
             print(
                 "Please check https://progress.opensuse.org/projects/qa/issues?query_id=481")
         else:
-            if issue_count > len(root['issues']) + len(root_p['issues']):
+            if issue_count > len(root['issues']):
                 print("There are more issues, check https://progress.opensuse.org/issues?"
                       + "query_id=481")
         exit(1)
