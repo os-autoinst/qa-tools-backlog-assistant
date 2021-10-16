@@ -10,3 +10,9 @@ Backlog Query | Number of Issues | Limits | Status
 | [Exceeding Due Date](https://progress.opensuse.org/issues?query_id=514) | 2 | <1 | &#x1F534;
 | [Untriaged Tools Tagged](https://progress.opensuse.org/issues?query_id=481) | 0 | <1 | &#x1F49A;
 | [Untriaged QA](https://progress.opensuse.org/projects/qa/issues?query_id=576) | 2 | <1 | &#x1F534;
+
+# Usage
+
+1. Clone Repo by ```git clone https://github.com/os-autoinst/qa-tools-backlog-assistant```
+2. Install Requirent by ```python3 -m pip install -r requirements.txt
+3. Run the script by ```python3 backlog_checker.py```
