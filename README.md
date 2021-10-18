@@ -1,5 +1,4 @@
 # Backlog Status
-
 *(Please refresh to see latest results)*
 
 Backlog Query | Number of Issues | Limits | Status
