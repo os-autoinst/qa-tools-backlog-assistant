@@ -1,8 +1,9 @@
 ---
 name: Backlog Limits Checker
+# yamllint disable-line rule:truthy
 on:
   schedule:
-  - cron: '*/10 * * * *'
+    - cron: '*/10 * * * *'
 
 jobs:
   check_suse_qa_tools_backlog_limits:
