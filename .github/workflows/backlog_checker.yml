@@ -1,11 +1,13 @@
 ---
 name: Backlog Limits Checker
+# yamllint disable-line rule:truthy
 on:
   schedule:
-  - cron: '*/10 * * * *'
+    - cron: '*/10 * * * *'
 
 jobs:
   check_suse_qa_tools_backlog_limits:
+    if: $github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo content
@@ -23,8 +25,7 @@ jobs:
           pip install -r requirements.txt
       - name: prepare output md file
         run: |
-          rm -f index.md
-          touch index.md
+          rm index.md
           python backlog_checker.py
       - name: check overall backlog length
         if: always()
