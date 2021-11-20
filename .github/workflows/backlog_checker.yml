@@ -7,7 +7,8 @@ on:
 
 jobs:
   check_suse_qa_tools_backlog_limits:
-    if: $github.ref == 'refs/heads/master'
+    # prevent running this on forks or any other branches
+    if: $github.ref == 'refs/heads/master' && github.repository_owner == 'os-autoinst'
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo content
