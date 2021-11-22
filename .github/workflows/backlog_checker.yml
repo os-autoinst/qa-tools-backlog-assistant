@@ -26,7 +26,7 @@ jobs:
           pip install -r requirements.txt
       - name: prepare output md file
         run: |
-          rm index.md
+          rm -f index.md
           python backlog_checker.py
       - name: check overall backlog length
         if: always()
