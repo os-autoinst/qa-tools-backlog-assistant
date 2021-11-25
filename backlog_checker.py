@@ -133,7 +133,7 @@ def check_query(name):
         res = check_zero(conf)
     if res[0] is False:
         results_to_md(conf, res[1], result_icons["fail"])
-        exit(1)
+        sys.exit(1)
     results_to_md(conf, res[1], result_icons["pass"])
 
 
