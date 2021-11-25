@@ -8,15 +8,6 @@ import requests
 
 # Icons used for PASS or FAIL in the md file
 result_icons = {"pass": "&#x1F49A;", "fail": "&#x1F534;"}
-# Links for various backlog queries to be used in the md file
-query_links = {
-    "Overall Backlog": "[Overall Backlog](https://progress.opensuse.org/issues?query_id=230)",
-    "Workable Backlog": "[Workable Backlog](https://progress.opensuse.org/issues?query_id=478)",
-    "Exceeding Due Date": "[Exceeding Due Date](https://progress.opensuse.org/issues?query_id=514)",
-    "Untriaged QA": "[Untriaged QA](https://progress.opensuse.org/projects/qa/issues?query_id=576)",
-    "Untriaged Tools Tagged": "[Untriaged Tools Tagged](https://progress.opensuse.org/issues?query_id=481)"
-}
-
 
 # Initialize a blank md file to replace the current README
 def initialize_md():
@@ -26,136 +17,127 @@ def initialize_md():
         md.write("*(Please refresh to see latest results)*\n\n")
         md.write("Backlog Query | Number of Issues | Limits | Status\n--- | --- | --- | ---\n")
 
+data = {
+    'gha_overall': {
+        'title': 'Overall Backlog',
+        'url': 'https://progress.opensuse.org/issues.json?query_id=230',
+        'max': 99,
+        'link': 'https://progress.opensuse.org/issues?query_id=230',
+        'type': 'backlog',
+    },
+    'gha_workable': {
+        'title': 'Workable Backlog',
+        'url': 'https://progress.opensuse.org/issues.json?query_id=478',
+        'max': 39,
+        'min': 11,
+        'link': 'https://progress.opensuse.org/issues?query_id=478',
+        'type': 'backlog',
+    },
+    'gha_exceed_due_date': {
+        'title': 'Exceeding Due Date',
+        'url': 'https://progress.opensuse.org/issues.json?query_id=514',
+        'max': 0,
+        'link': 'https://progress.opensuse.org/issues?query_id=514',
+        'type': 'zero',
+    },
+    'gha_untriaged_qa': {
+        'title': 'Untriaged QA',
+        'url': 'https://progress.opensuse.org/issues.json?query_id=576&project_id=115',
+        'max': 0,
+        'link': 'https://progress.opensuse.org/projects/qa/issues?query_id=576&project_id=115',
+        'type': 'zero',
+    },
+    'gha_untriaged_tools': {
+        'title': 'Untriaged Tools Tagged',
+        'url': 'https://progress.opensuse.org/issues.json?query_id=481',
+        'max': 0,
+        'link': 'https://progress.opensuse.org/issues?query_id=481',
+        'type': 'zero',
+    },
+}
+
 
 # Append individual results to md file
-def results_to_md(item, number, limits, status):
+def results_to_md(conf, number, status):
+    mdlink = '[' + conf['title'] + '](' + conf['link'] + ')'
+    lessthan = conf['max'] + 1
+    limits = '<' + str(lessthan)
+    if 'min' in conf:
+        limits += ', >' + str(conf['min'] - 1)
     with open("index.md", "a") as md:
-        md.write("| " + item + " | " + number + " | " + limits + " | " + status + "\n")
+        md.write("| " + mdlink + " | " + str(number) + " | " + limits + " | " + status + "\n")
 
 
-# Overall backlog length check
-def gha_overall():
+def get_json(conf):
     key = os.environ['key']
-
-    answer = requests.get("https://progress.opensuse.org/issues.json?query_id=230&key=" + key)
-    root = json.loads(answer.content)
-    issue_count = int(root["total_count"])
-    if issue_count > 100:
-        print("Backlog has more than 100 overall tickets!")
-        print("Please check https://progress.opensuse.org/issues?query_id=230")
-        results_to_md(query_links["Overall Backlog"], str(issue_count), "<100",
-                      result_icons["fail"])
-        exit(1)
-    print("Overall backlog length is " + str(issue_count) + ", all good!")
-    results_to_md(query_links["Overall Backlog"], str(issue_count), "<100",
-                  result_icons["pass"])
+    answer = requests.get(conf['url'] + "&key=" + key)
+    return json.loads(answer.content)
 
 
-# Workable backlog length check
-def gha_workable():
-    key = os.environ['key']
-    answer = requests.get("https://progress.opensuse.org/issues.json?query_id=478&key=" + key)
-    root = json.loads(answer.content)
-    issue_count = int(root["total_count"])
-    backlog_ok = False
-    if issue_count > 40:
-        print("Backlog has more than 40 'workable' tickets!")
-        results_to_md("Workable Backlog", str(issue_count), ">10, <40",
-                      result_icons["fail"])
-    elif issue_count < 10:
-        print("Backlog has less than 10 'workable' tickets!")
-        results_to_md("Workable Backlog", str(issue_count), ">10, <40",
-                      result_icons["fail"])
+def list_issues(conf, root):
+    try:
+        for poo in root['issues']:
+            print("https://progress.opensuse.org/issues/" + str(poo['id']))
+    except Exception:
+        print("There was an error retrieving the issues " + conf['title'])
+        print("Please check " + conf['link'])
     else:
-        backlog_ok = True
-    if not backlog_ok:
-        print("Please check https://progress.opensuse.org/issues?query_id=478")
-        exit(1)
-    print("'Workable' backlog length is " + str(issue_count) + ", all good!")
-    results_to_md(query_links["Workable Backlog"], str(issue_count), ">10, <40",
-                  result_icons["pass"])
+        issue_count = int(root["total_count"])
+        if issue_count > len(root['issues']):
+            print("there are more issues, check " + conf['link'])
 
 
-# Issues exceeding due date
-def gha_exceed_due_date():
-    key = os.environ['key']
-    answer = requests.get("https://progress.opensuse.org/issues.json?query_id=514&key=" + key)
-    root = json.loads(answer.content)
+def failure_more(conf):
+    print(conf['title'] + " has more than " + str(conf['max']) + " tickets!")
+    print("Please check " + conf['link'])
+    return False
+
+
+def failure_less(conf):
+    print(conf['title'] + " has less than " + str(conf['min']) + " tickets!")
+    print("Please check " + conf['link'])
+    return False
+
+
+def check_backlog(conf):
+    root = get_json(conf)
     issue_count = int(root["total_count"])
-    if issue_count > 0:
-        print("There are tickets exceeding due date!")
-        try:
-            for poo in root['issues']:
-                print("https://progress.opensuse.org/issues/" + str(poo['id']))
-        except Exception:
-            print("There was an error retrieving the issues exceeding due date")
-            print("Please check " + "https://progress.opensuse.org/issues?query_id=514")
-        else:
-            if issue_count > len(root['issues']):
-                print("there are more issues, check https://progress.opensuse.org/issues?"
-                      + "query_id=514")
-        results_to_md(query_links["Exceeding Due Date"], str(issue_count), "<1",
-                      result_icons["fail"])
-        exit(1)
-    print("Issues exceeding due date are " + str(issue_count) + ", all good!")
-    results_to_md(query_links["Exceeding Due Date"], str(issue_count), "<1",
-                  result_icons["pass"])
+    if issue_count > conf['max']:
+        res = failure_more(conf)
+    elif 'min' in conf and issue_count < conf['min']:
+        res = failure_less(conf)
+    else:
+        res = True
+        print(conf['title'] + " length is " + str(issue_count) + ", all good!")
+    return (res, issue_count)
 
 
-# Untriaged issues
-def gha_untriaged_qa():
-    key = os.environ['key']
-    answer = requests.get("https://progress.opensuse.org/issues.json?"
-                          + "query_id=576&project_id=115&key=" + key)
-    root = json.loads(answer.content)
+def check_zero(conf):
+    root = get_json(conf)
     issue_count = int(root["total_count"])
-    if issue_count > 0:
-        print("There are untriaged tickets!")
-        try:
-            for poo in root['issues']:
-                print("https://progress.opensuse.org/issues/" + str(poo['id']))
-        except Exception:
-            print(
-                "Please check https://progress.opensuse.org/projects/qa/issues?query_id=576")
-        else:
-            if issue_count > len(root['issues']):
-                print("there are more issues, check https://progress.opensuse.org/issues?"
-                      + "query_id=576")
-        results_to_md(query_links["Untriaged QA"], str(issue_count), "<1",
-                      result_icons["fail"])
+    if issue_count > conf['max']:
+        res = False
+        print("There are " + conf['title'] + " tickets!")
+        list_issues(conf, root)
+    else:
+        res = True
+        print("There are no " + conf['title'] + " tickets, all good!")
+    return (res, issue_count)
+
+
+def check_query(name):
+    conf = data[name]
+    if conf['type'] == 'backlog':
+        res = check_backlog(conf)
+    else:
+        res = check_zero(conf)
+    if res[0] is False:
+        results_to_md(conf, res[1], result_icons["fail"])
         exit(1)
-    print("There are no untriaged tickets, all good!")
-    results_to_md(query_links["Untriaged QA"], str(issue_count), "<1",
-                  result_icons["pass"])
+    results_to_md(conf, res[1], result_icons["pass"])
 
 
-# Untriaged 'tools' tagged issues
-def gha_untriaged_tools():
-    key = os.environ['key']
-    answer = requests.get("https://progress.opensuse.org/issues.json?query_id=481&key=" + key)
-    root = json.loads(answer.content)
-    issue_count = int(root["total_count"])
-    if issue_count > 0:
-        print("There are untriaged tools tagged tickets!")
-        try:
-            for poo in root['issues']:
-                print("https://progress.opensuse.org/issues/" + str(poo['id']))
-        except Exception:
-            print(
-                "Please check https://progress.opensuse.org/projects/qa/issues?query_id=481")
-        else:
-            if issue_count > len(root['issues']):
-                print("There are more issues, check https://progress.opensuse.org/issues?"
-                      + "query_id=481")
-        exit(1)
-    print("There are no untriaged tools tagged tickets, all good!")
-    results_to_md(query_links["Untriaged Tools Tagged"], str(issue_count), "<1",
-                  result_icons["pass"])
-
-
-functions = {name: obj for name, obj in getmembers(sys.modules[__name__]) if (isfunction(
-    obj) and name.startswith("gha"))}
 if "fun" not in os.environ:
     initialize_md()
 else:
-    functions[os.environ["fun"]]()
+    check_query(os.environ["fun"])
