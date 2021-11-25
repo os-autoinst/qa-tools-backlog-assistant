@@ -65,7 +65,7 @@ def results_to_md(conf, number, status):
     if 'min' in conf:
         limits += ', >' + str(conf['min'] - 1)
     with open("index.md", "a") as md:
-        md.write("| " + mdlink + " | " + str(number) + " | " + limits + " | " + status + "\n")
+        md.write(mdlink + " | " + str(number) + " | " + limits + " | " + status + "\n")
 
 
 def get_json(conf):
