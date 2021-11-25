@@ -24,6 +24,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install markdown
       - name: prepare output md file
         run: |
           rm -f index.md
@@ -66,16 +67,15 @@ jobs:
       - name: Commit files
         if: always()
         run: |
-          rm -f README.md
-          mv index.md README.md
+          mkdir -p gh-pages
+          python -m markdown index.md > gh-pages/index.html
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add README.md
-          git commit --amend --no-edit
+          git add index.html
+          git commit --no-edit -m "Update index.html" -a
       - name: Push changes
         if: always()
-        uses: ad-m/github-push-action@master
+        uses: JamesIves/github-pages-deploy-action@4.1.6
         with:
-          force: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: gh-pages
+          folder: gh-pages
