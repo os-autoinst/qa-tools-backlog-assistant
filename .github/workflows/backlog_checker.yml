@@ -74,7 +74,7 @@ jobs:
           mkdir -p gh-pages
           cat head.html >gh-pages/index.html
           kramdown index.md >>gh-pages/index.html
-          echo '</body></html>' >>gh-pages/index.html
+          cat foot.html >>gh-pages/index.html
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add gh-pages/
