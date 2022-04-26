@@ -54,6 +54,22 @@ data = {
         'link': 'https://progress.opensuse.org/issues?query_id=481',
         'type': 'zero',
     },
+    'gha_in_progress_tools': {
+        'title': 'In Progress',
+        'url': 'https://progress.opensuse.org/issues.json?query_id=505',
+        'max': 10,
+        'min': 1,
+        'link': 'https://progress.opensuse.org/issues?query_id=505',
+        'type': 'zero',
+    },
+    'gha_in_feedback_tools': {
+        'title': 'In Feedback',
+        'url': 'https://progress.opensuse.org/issues.json?query_id=520',
+        'max': 30,
+        'min': 1,
+        'link': 'https://progress.opensuse.org/issues?query_id=520',
+        'type': 'zero',
+    },
 }
 
 
