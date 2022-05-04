@@ -8,9 +8,7 @@ on:
     branches: [ testworkflow ]
 
 jobs:
-  check_suse_qa_tools_backlog_limits:
-    # prevent running this on forks or any other branches
-    if: github.ref == 'refs/heads/master' && github.repository_owner == 'os-autoinst' || github.ref == 'refs/heads/testworkflow'
+  setup:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo content
@@ -33,55 +31,33 @@ jobs:
         run: |
           rm -f index.md
           python backlog_checker.py
-      - name: check overall backlog length
+  queries:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        fun:
+          - gha_overall
+          - gha_workable
+          - gha_exceed_due_date
+          - gha_untriaged_tools
+          - gha_untriaged_qa
+          - gha_in_progress_tools
+          - gha_in_feedback_tools
+    steps:
+      - name: check backlog query
         if: always()
         run: |
           python backlog_checker.py
         env:
           key: ${{ secrets.REDMINE_API_KEY }}
-          fun: "gha_overall"
-      - name: check workable backlog length
-        if: always()
-        run: |
-          python backlog_checker.py
-        env:
-          key: ${{ secrets.REDMINE_API_KEY }}
-          fun: "gha_workable"
-      - name: check issues exceeding due date
-        if: always()
-        run: |
-          python backlog_checker.py
-        env:
-          key: ${{ secrets.REDMINE_API_KEY }}
-          fun: "gha_exceed_due_date"
-      - name: check untriaged 'tools' tagged issues
-        if: always()
-        run: |
-          python backlog_checker.py
-        env:
-          key: ${{ secrets.REDMINE_API_KEY }}
-          fun: "gha_untriaged_tools"
-      - name: check untriaged issues
-        if: always()
-        run: |
-          python backlog_checker.py
-        env:
-          key: ${{ secrets.REDMINE_API_KEY }}
-          fun: "gha_untriaged_qa"
-      - name: check in progress tools issues
-        if: always()
-        run: |
-          python backlog_checker.py
-        env:
-          key: ${{ secrets.REDMINE_API_KEY }}
-          fun: "gha_in_progress_tools"
-      - name: check in feedback tools issues
-        if: always()
-        run: |
-          python backlog_checker.py
-        env:
-          key: ${{ secrets.REDMINE_API_KEY }}
-          fun: "gha_in_feedback_tools"
+          fun: ${{ matrix.fun }}
+  deploy:
+    needs: queries
+    runs-on: ubuntu-latest
+    # prevent running this on forks or any other branches
+    if: github.ref == 'refs/heads/master' && github.repository_owner == 'os-autoinst' || github.ref == 'refs/heads/testworkflow'
+    steps:
       - name: Commit files
         if: always()
         run: |
