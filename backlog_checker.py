@@ -4,6 +4,7 @@ import json
 from datetime import datetime, timedelta
 from inspect import getmembers, isfunction
 import requests
+import yaml
 
 
 # Icons used for PASS or FAIL in the md file
@@ -16,61 +17,6 @@ def initialize_md():
         md.write("**Latest Run:** " + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " GMT\n")
         md.write("*(Please refresh to see latest results)*\n\n")
         md.write("Backlog Query | Number of Issues | Limits | Status\n--- | --- | --- | ---\n")
-
-data = {
-    'gha_overall': {
-        'title': 'Overall Backlog',
-        'url': 'https://progress.opensuse.org/issues.json?query_id=230',
-        'max': 99,
-        'link': 'https://progress.opensuse.org/issues?query_id=230',
-        'type': 'backlog',
-    },
-    'gha_workable': {
-        'title': 'Workable Backlog',
-        'url': 'https://progress.opensuse.org/issues.json?query_id=478',
-        'max': 39,
-        'min': 11,
-        'link': 'https://progress.opensuse.org/issues?query_id=478',
-        'type': 'backlog',
-    },
-    'gha_exceed_due_date': {
-        'title': 'Exceeding Due Date',
-        'url': 'https://progress.opensuse.org/issues.json?query_id=514',
-        'max': 0,
-        'link': 'https://progress.opensuse.org/issues?query_id=514',
-        'type': 'zero',
-    },
-    'gha_untriaged_qa': {
-        'title': 'Untriaged QA',
-        'url': 'https://progress.opensuse.org/issues.json?query_id=576&project_id=115',
-        'max': 0,
-        'link': 'https://progress.opensuse.org/projects/qa/issues?query_id=576&project_id=115',
-        'type': 'zero',
-    },
-    'gha_untriaged_tools': {
-        'title': 'Untriaged Tools Tagged',
-        'url': 'https://progress.opensuse.org/issues.json?query_id=481',
-        'max': 0,
-        'link': 'https://progress.opensuse.org/issues?query_id=481',
-        'type': 'zero',
-    },
-    'gha_in_progress_tools': {
-        'title': 'In Progress',
-        'url': 'https://progress.opensuse.org/issues.json?query_id=505',
-        'max': 10,
-        'min': 1,
-        'link': 'https://progress.opensuse.org/issues?query_id=505',
-        'type': 'zero',
-    },
-    'gha_in_feedback_tools': {
-        'title': 'In Feedback',
-        'url': 'https://progress.opensuse.org/issues.json?query_id=520',
-        'max': 30,
-        'min': 1,
-        'link': 'https://progress.opensuse.org/issues?query_id=520',
-        'type': 'zero',
-    },
-}
 
 
 # Append individual results to md file
@@ -142,7 +88,10 @@ def check_zero(conf):
 
 
 def check_query(name):
-    conf = data[name]
+    filename = os.environ.get('config', 'queries.yaml')
+    with open(filename, 'r') as config:
+        data = yaml.safe_load(config)
+    conf = data['queries'][name]
     if conf['type'] == 'backlog':
         res = check_backlog(conf)
     else:
