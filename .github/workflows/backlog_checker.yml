@@ -68,6 +68,30 @@ jobs:
         env:
           key: ${{ secrets.REDMINE_API_KEY }}
           fun: "gha_untriaged_qa"
+      - name: check SLO immediate
+        if: always()
+        run: python backlog_checker.py
+        env:
+          key: ${{ secrets.REDMINE_API_KEY }}
+          fun: "gha_slo_immediate"
+      - name: check SLO urgent
+        if: always()
+        run: python backlog_checker.py
+        env:
+          key: ${{ secrets.REDMINE_API_KEY }}
+          fun: "gha_slo_urgent"
+      - name: check SLO high
+        if: always()
+        run: python backlog_checker.py
+        env:
+          key: ${{ secrets.REDMINE_API_KEY }}
+          fun: "gha_slo_high"
+      - name: check SLO normal
+        if: always()
+        run: python backlog_checker.py
+        env:
+          key: ${{ secrets.REDMINE_API_KEY }}
+          fun: "gha_slo_normal"
       - name: check in progress tools issues
         if: always()
         run: |

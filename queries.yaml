@@ -30,6 +30,30 @@ queries:
     max: 0
     link: https://progress.opensuse.org/issues?query_id=481
     type: zero
+  gha_slo_immediate:
+    title: SLO immediate (<1 day)
+    url: https://progress.opensuse.org/issues.json?query_id=542
+    max: 0
+    link: https://progress.opensuse.org/issues?query_id=542
+    type: zero
+  gha_slo_urgent:
+    title: SLO urgent (<1 week)
+    url: https://progress.opensuse.org/issues.json?query_id=543
+    max: 0
+    link: https://progress.opensuse.org/issues?query_id=543
+    type: zero
+  gha_slo_high:
+    title: SLO high (<1 month)
+    url: https://progress.opensuse.org/issues.json?query_id=544
+    max: 0
+    link: https://progress.opensuse.org/issues?query_id=544
+    type: zero
+  gha_slo_normal:
+    title: SLO normal (<1 normal)
+    url: https://progress.opensuse.org/issues.json?query_id=545
+    max: 0
+    link: https://progress.opensuse.org/issues?query_id=545
+    type: zero
   gha_in_progress_tools:
     title: In Progress
     url: https://progress.opensuse.org/issues.json?query_id=505
