@@ -68,3 +68,10 @@ queries:
     min: 1
     link: https://progress.opensuse.org/issues?query_id=520
     type: zero
+ gha_in_blocked_tools:
+    title: Blocked
+    url: https://progress.opensuse.org/issues.json?query_id=734
+    max: 50
+    min: 0
+    link: https://progress.opensuse.org/issues?query_id=734
+    type: zero
