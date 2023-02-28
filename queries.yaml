@@ -33,7 +33,7 @@ queries:
     max: 0
   - title: In Progress
     query: query_id=505
-    max: 10
+    max: 7
     min: 1
   - title: In Feedback
     query: query_id=520
