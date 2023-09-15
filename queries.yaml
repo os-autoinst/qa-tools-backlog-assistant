@@ -5,7 +5,10 @@ url: https://progress.opensuse.org/projects/qa/wiki/Tools
 queries:
   - title: Overall Backlog
     query: query_id=230
-    max: 99
+    max: 64
+  - title: Next
+    query: query_id=794
+    max: 64
   - title: Workable Backlog
     query: query_id=478
     max: 39
