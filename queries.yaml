@@ -22,16 +22,16 @@ queries:
   - title: Untriaged Tools Tagged
     query: query_id=481
     max: 0
-  - title: SLO immediate (<1 day)
+  - title: SLA immediate (<1 day)
     query: query_id=542
     max: 0
-  - title: SLO urgent (<1 week)
+  - title: SLA urgent (<1 week)
     query: query_id=543
     max: 0
-  - title: SLO high (<1 month)
+  - title: SLA high (<1 month)
     query: query_id=544
     max: 0
-  - title: SLO normal (<1 year)
+  - title: SLA normal (<1 year)
     query: query_id=545
     max: 0
   - title: In Progress
