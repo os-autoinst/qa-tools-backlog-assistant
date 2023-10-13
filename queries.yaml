@@ -34,6 +34,9 @@ queries:
   - title: SLA normal (<1 year)
     query: query_id=545
     max: 0
+  - title: SLA no imm/urg blocked
+    query: query_id=821
+    max: 0
   - title: In Progress
     query: query_id=505
     max: 7
