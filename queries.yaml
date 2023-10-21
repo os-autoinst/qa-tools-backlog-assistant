@@ -37,15 +37,6 @@ queries:
   - title: SLA no imm/urg blocked
     query: query_id=821
     max: 0
-  - title: SLO urgent (<1 day)
-    query: query_id=824
-    max: 0
-  - title: SLO high (<1 week)
-    query: query_id=827
-    max: 0
-  - title: SLO normal (<1 month)
-    query: query_id=830
-    max: 0
   - title: In Progress
     query: query_id=505
     max: 7
