@@ -25,3 +25,8 @@ jobs:
         with:
           folder: gh-pages
           clean-exclude: pr-preview
+      - name: Notify about problems
+        if: ${{ env.BACKLOG_STATUS != 0 }}
+        run: |
+          echo "Notify about backlog problems"
+        shell: bash
