@@ -21,6 +21,7 @@ jobs:
       - uses: openSUSE/backlogger@main
         with:
           redmine_api_key: ${{ secrets.REDMINE_API_KEY }}
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
       - uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: gh-pages
