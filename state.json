@@ -1,1 +1,1 @@
-{"bad_queries": {}, "updated": "2024-04-29T23:51:26.669073"}
+{"bad_queries": {"SLO high (<1 week)": {"url": "https://progress.opensuse.org/issues?query_id=827", "issue_count": 1, "limits": "<1"}}, "updated": "2024-04-30T00:28:35.148038"}
