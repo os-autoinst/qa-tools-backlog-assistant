@@ -53,6 +53,5 @@ queries:
   - title: In Feedback
     query: query_id=520
     max: 10
-    min: 1
   - title: Closed yesterday
     query: query_id=773
