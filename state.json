@@ -1,1 +1,1 @@
-{"bad_queries": {"SLA no imm/urg blocked": {"url": "https://progress.opensuse.org/issues?query_id=821", "issue_count": 1, "limits": "<1"}, "In Progress": {"url": "https://progress.opensuse.org/issues?query_id=505", "issue_count": 8, "limits": "<8, >0"}}, "updated": "2024-09-04T09:41:52.579591"}
+{"bad_queries": {"In Progress": {"url": "https://progress.opensuse.org/issues?query_id=505", "issue_count": 8, "limits": "<8, >0"}}, "updated": "2024-09-04T09:51:35.407173"}
