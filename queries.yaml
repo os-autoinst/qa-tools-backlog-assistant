@@ -9,7 +9,7 @@ queries:
   - title: Next
     query: query_id=794
     max: 64
-  - title: Workable Backlog
+  - title: Only workable from backlog
     query: query_id=478
     max: 39
     min: 11
