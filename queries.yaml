@@ -3,9 +3,15 @@ web: https://progress.opensuse.org/issues
 team: QE Tools
 url: https://progress.opensuse.org/projects/qa/wiki/Tools
 queries:
-  - title: Overall Backlog
+  - title: Combined Backlog (dev+infra)
     query: query_id=230
     max: 64
+  - title: Dev Backlog
+    query: query_id=754
+    max: 50
+  - title: Infra Backlog
+    query: query_id=757
+    max: 50
   - title: Next
     query: query_id=794
     max: 64
