@@ -1,1 +1,1 @@
-{"bad_queries": {}, "updated": "2025-05-13T07:10:56.057189"}
+{"bad_queries": {"Combined Backlog (dev+infra)": {"url": "https://progress.opensuse.org/issues?query_id=230", "issue_count": 65, "limits": "<65"}, "Exceeding Due Date": {"url": "https://progress.opensuse.org/issues?query_id=514", "issue_count": 1, "limits": "<1"}}, "updated": "2025-05-13T07:29:06.088220"}
