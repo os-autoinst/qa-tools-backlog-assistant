@@ -1,1 +1,1 @@
-{"bad_queries": {"Combined Backlog (dev+infra)": {"url": "https://progress.opensuse.org/issues?query_id=230", "issue_count": 65, "limits": "<65"}}, "updated": "2025-08-25T23:51:50.950968"}
+{"bad_queries": {"Combined Backlog (dev+infra)": {"url": "https://progress.opensuse.org/issues?query_id=230", "issue_count": 65, "limits": "<65"}, "SLO high (<1 week)": {"url": "https://progress.opensuse.org/issues?query_id=827", "issue_count": 1, "limits": "<1"}}, "updated": "2025-08-26T00:44:35.921741"}
