@@ -1,1 +1,1 @@
-{"bad_queries": {"Combined Backlog (dev+infra)": {"url": "https://progress.opensuse.org/issues?query_id=230", "issue_count": 65, "limits": "<65"}, "Workable Infra Backlog": {"url": "https://progress.opensuse.org/issues?query_id=1195", "issue_count": 10, "limits": "<21, >10"}}, "updated": "2025-11-14T14:31:36.349185"}
+{"bad_queries": {"Combined Backlog (dev+infra)": {"url": "https://progress.opensuse.org/issues?query_id=230", "issue_count": 65, "limits": "<65"}}, "updated": "2025-11-14T14:44:30.707985"}
