@@ -1,1 +1,1 @@
-{"bad_queries": {}, "updated": "2025-11-23T23:51:38.570733"}
+{"bad_queries": {"SLA immediate (<1 day)": {"url": "https://progress.opensuse.org/issues?query_id=542", "issue_count": 1, "limits": "<1"}}, "updated": "2025-11-24T00:48:32.186883"}
