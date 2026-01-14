@@ -5,7 +5,7 @@ url: https://progress.opensuse.org/projects/qa/wiki/Tools
 queries:
   - title: Combined Backlog (dev+infra)
     query: query_id=230
-    max: 64
+    max: 80
   - title: Dev Backlog
     query: query_id=754
     max: 50
