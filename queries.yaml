@@ -47,6 +47,9 @@ queries:
   - title: SLA no imm/urg blocked
     query: query_id=821
     max: 0
+  - title: SLA no imm/urg unassigned
+    query: query_id=1106
+    max: 0
   - title: SLO urgent (<1 day)
     query: query_id=824
     max: 0
