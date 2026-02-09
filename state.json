@@ -1,1 +1,1 @@
-{"bad_queries": {"SLO normal (<1 month)": {"url": "https://progress.opensuse.org/issues?query_id=830", "issue_count": 1, "limits": "<1"}}, "updated": "2026-02-09T15:12:59.491822"}
+{"bad_queries": {"Workable Infra Backlog": {"url": "https://progress.opensuse.org/issues?query_id=1195", "issue_count": 5, "limits": "<21, >5"}}, "updated": "2026-02-09T15:21:48.873734"}
