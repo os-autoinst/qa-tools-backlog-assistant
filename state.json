@@ -1,1 +1,1 @@
-{"bad_queries": {"In Progress": {"url": "https://progress.opensuse.org/issues?query_id=505", "issue_count": 11, "limits": "<11, >0"}}, "updated": "2026-02-10T07:44:45.211912"}
+{"bad_queries": {"Infra Backlog": {"url": "https://progress.opensuse.org/issues?query_id=757", "issue_count": 52, "limits": "<51"}, "In Progress": {"url": "https://progress.opensuse.org/issues?query_id=505", "issue_count": 11, "limits": "<11, >0"}}, "updated": "2026-02-10T08:29:10.208549"}
