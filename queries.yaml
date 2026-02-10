@@ -18,11 +18,11 @@ queries:
   - title: Workable Dev Backlog
     query: query_id=1192
     max: 20
-    min: 6
+    min: 4
   - title: Workable Infra Backlog
     query: query_id=1195
     max: 20
-    min: 6
+    min: 4
   - title: Exceeding Due Date
     query: query_id=514
     max: 0
