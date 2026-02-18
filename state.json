@@ -1,1 +1,1 @@
-{"bad_queries": {"Workable Infra Backlog": {"url": "https://progress.opensuse.org/issues?query_id=1195", "issue_count": 3, "limits": "<21, >3"}}, "updated": "2026-02-17T23:46:14.144618"}
+{"bad_queries": {"Workable Infra Backlog": {"url": "https://progress.opensuse.org/issues?query_id=1195", "issue_count": 3, "limits": "<21, >3"}, "Exceeding Due Date": {"url": "https://progress.opensuse.org/issues?query_id=514", "issue_count": 3, "limits": "<1"}}, "updated": "2026-02-18T00:01:17.543607"}
