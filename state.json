@@ -1,1 +1,1 @@
-{"bad_queries": {"SLO normal (<1 month)": {"url": "https://progress.opensuse.org/issues?query_id=830", "issue_count": 1, "limits": "<1"}}, "updated": "2026-05-27T06:06:24.831789"}
+{"bad_queries": {"Untriaged QA": {"url": "https://progress.opensuse.org/issues?query_id=576&project_id=115", "issue_count": 1, "limits": "<1"}}, "updated": "2026-05-27T10:14:47.775956"}
