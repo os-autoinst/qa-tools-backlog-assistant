@@ -15,7 +15,7 @@ jobs:
     if: github.ref == 'refs/heads/master' && github.repository_owner == 'os-autoinst' || github.ref == 'refs/heads/testworkflow'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
           persist-credentials: false
       - uses: openSUSE/backlogger@3d037a7decf5a6baf4adb762d4bb33058c5f1ee1  # main
