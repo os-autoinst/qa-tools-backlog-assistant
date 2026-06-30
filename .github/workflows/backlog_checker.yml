@@ -15,14 +15,14 @@ jobs:
     if: github.ref == 'refs/heads/master' && github.repository_owner == 'os-autoinst' || github.ref == 'refs/heads/testworkflow'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
         with:
           persist-credentials: false
-      - uses: openSUSE/backlogger@3d037a7decf5a6baf4adb762d4bb33058c5f1ee1 # main
+      - uses: openSUSE/backlogger@3d037a7decf5a6baf4adb762d4bb33058c5f1ee1  # main
         with:
           redmine_api_key: ${{ secrets.REDMINE_API_KEY }}
           webhook_url: ${{ secrets.WEBHOOK_URL }}
-      - uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
+      - uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f  # v4.8.0
         with:
           folder: gh-pages
           clean-exclude: pr-preview
