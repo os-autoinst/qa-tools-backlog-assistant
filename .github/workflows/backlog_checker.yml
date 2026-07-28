@@ -5,14 +5,14 @@ on:
   schedule:
     - cron: '*/10 * * * *'
   push:
-    branches: ['master']
+    branches: ['main']
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
   check_suse_qa_tools_backlog_limits:
     # prevent running this on forks or any other branches
-    if: github.ref == 'refs/heads/master' && github.repository_owner == 'os-autoinst' || github.ref == 'refs/heads/testworkflow'
+    if: github.ref == 'refs/heads/main' && github.repository_owner == 'os-autoinst' || github.ref == 'refs/heads/testworkflow'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
