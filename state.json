@@ -1,1 +1,1 @@
-{"bad_queries": {"SLO high (<1 week)": {"url": "https://progress.opensuse.org/issues?query_id=827", "issue_count": 3, "limits": "<1"}, "In Feedback": {"url": "https://progress.opensuse.org/issues?query_id=520", "issue_count": 13, "limits": "<13"}}, "updated": "2026-07-28T04:18:20.075056"}
+{"bad_queries": {"SLO high (<1 week)": {"url": "https://progress.opensuse.org/issues?query_id=827", "issue_count": 2, "limits": "<1"}, "In Feedback": {"url": "https://progress.opensuse.org/issues?query_id=520", "issue_count": 13, "limits": "<13"}}, "updated": "2026-07-28T06:42:10.576610"}
