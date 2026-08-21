@@ -1,1 +1,1 @@
-{"bad_queries": {}, "updated": "2026-08-20T23:53:59.222132"}
+{"bad_queries": {"Exceeding Due Date": {"url": "https://progress.opensuse.org/issues?query_id=514", "issue_count": 1, "limits": "<1"}}, "updated": "2026-08-21T00:32:01.517719"}
