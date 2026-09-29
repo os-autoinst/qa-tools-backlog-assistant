@@ -1,0 +1,41 @@
+#!/bin/bash
+# Render a backlogger in podman container
+#
+# Usage: tools/preview [config]   (default: queries.yaml in the repository root)
+# Env:   REDMINE_API_KEY (required), GITHUB_TOKEN (optional), PORT (default 8000),
+set -euo pipefail
+
+usage() {
+    sed -n '2,6s/^# \{0,1\}//p' "$0"
+    exit "${1:-0}"
+}
+
+[[ ${1:-} == -h || ${1:-} == --help ]] && usage
+[[ $# -gt 1 ]] && usage 1
+
+root=$(git -C "$(dirname "$0")" rev-parse --show-toplevel)
+config=${1:-queries.yaml}
+port=${PORT:-8000}
+
+[[ -f $root/$config ]] || { echo "preview: $root/$config not found" >&2; exit 1; }
+[[ -n ${REDMINE_API_KEY:-} ]] || { echo "preview: export REDMINE_API_KEY first" >&2; exit 1; }
+
+exec podman run --rm -it -p "$port:8000" \
+    -e REDMINE_API_KEY -e GITHUB_TOKEN \
+    -e CONFIG="$config" -e HOST_PORT="$port" -e LANG=C.UTF-8 \
+    -v "$root":/work:Z,ro -w /tmp registry.opensuse.org/opensuse/tumbleweed:latest bash -c '
+        zypper -q -n --gpg-auto-import-keys install --no-recommends \
+                python3-PyYAML python3-requests git-core "rubygem(kramdown)" >/dev/null \
+            && git clone -q --depth 1 https://github.com/openSUSE/backlogger /bl || exit 1
+        python3 /bl/backlogger.py "/work/$CONFIG" --exit-code; rc=$?
+        case $rc in
+            0) color="#55cc33"; echo "all queries within limits" ;;
+            3) color="#cc3333"; echo "some queries outside limits (still rendering)" ;;
+            *) echo "backlogger failed (exit $rc)"; exit $rc ;;
+        esac
+        mkdir gh-pages && kramdown index.md > body.html || { echo "rendering index.md failed"; exit 1; }
+        cat /bl/head.html body.html /bl/foot.html > gh-pages/index.html
+        sed -i -e "s@STATUS_COLOR@$color@g" -e "s@GITHUB_REPOSITORY@local-preview@g" \
+               -e "s@WORKFLOW_NAME@Local preview@g" -e "s@PREVIEW_IMAGE_URL@@g" gh-pages/index.html
+        echo "Open http://localhost:$HOST_PORT"
+        exec python3 -m http.server --bind :: -d gh-pages 8000 2>/dev/null'
