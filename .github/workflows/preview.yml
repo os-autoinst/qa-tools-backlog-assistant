@@ -1,0 +1,58 @@
+---
+name: Backlog Limits Checker Build
+concurrency: preview-${{ github.ref }}
+# yamllint disable-line rule:truthy
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+    branches:
+      - "**"
+jobs:
+  backlogger_preview_build:
+    runs-on: ubuntu-latest
+    steps:
+      # yamllint disable-line rule:line-length
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Run the backlogger action
+        if: github.event.action != 'closed'
+        # yamllint disable-line rule:line-length
+        uses: openSUSE/backlogger@c009922fe3086527b3930128e62446f90862c0f8  # main
+        with:
+          config: queries.yaml
+          redmine_api_key: ${{ secrets.REDMINE_API_KEY }}
+          github_token: ${{ github.token }}
+
+      - name: Render check (kramdown)
+        if: github.event.action != 'closed'
+        # yamllint disable-line rule:line-length
+        run: |
+          export GEM_HOME="$RUNNER_CACHE_DIR/gems"
+          gem install --no-executables kramdown
+          ruby tools/check-render index.md
+          ruby tools/check-render gh-pages/index.html
+
+      - name: Save PR info
+        run: |
+          mkdir -p pr-info
+          echo "${{ github.event.number }}" > pr-info/pr-number
+          echo "${{ github.event.action }}" > pr-info/pr-action
+
+      - name: Upload PR info
+        # yamllint disable-line rule:line-length
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: pr-info
+          path: pr-info/
+
+      - name: Upload preview artifact
+        if: github.event.action != 'closed'
+        # yamllint disable-line rule:line-length
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: preview-artifact
+          path: gh-pages/
