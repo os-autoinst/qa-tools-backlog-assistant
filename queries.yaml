@@ -65,3 +65,23 @@ queries:
     max: 12
   - title: Closed yesterday
     query: query_id=773
+  - title: Stale PRs (>7 days)
+    type: github
+    repos:
+      - os-autoinst/openQA
+      - os-autoinst/os-autoinst
+      - os-autoinst/scripts
+      - os-autoinst/os-autoinst-distri-openQA
+      - os-autoinst/openqa-trigger-from-obs
+      - os-autoinst/openqa_review
+      - os-autoinst/openqa_bugfetcher
+      - os-autoinst/baremetal_support
+      - openSUSE/Mojo-IOLoop-ReadWriteProcess
+      - openSUSE/mtui
+      - openSUSE/qem-bot
+      - openSUSE/backlogger
+      - openSUSE/qem-dashboard
+      - openSUSE/openSUSE-release-tools
+      - openSUSE/git-sha-verify
+    stale_days: 7
+    max: 0
