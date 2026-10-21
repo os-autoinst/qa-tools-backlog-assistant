@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: false
-      - uses: openSUSE/backlogger@b4eec640a5da221be25a836f6cabe63d1753df11  # main
+      - uses: openSUSE/backlogger@5e23a7ebc80a9cf18d3b23b85b77559588fb1da7  # main
         with:
           redmine_api_key: ${{ secrets.REDMINE_API_KEY }}
           webhook_url: ${{ secrets.WEBHOOK_URL }}
