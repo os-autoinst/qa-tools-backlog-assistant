@@ -18,12 +18,18 @@ jobs:
       # yamllint disable-line rule:line-length
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
+      - name: Generate preview config
+        if: github.event.action != 'closed'
+        # a PR run from a fork gets no base-repo secrets, so it must not request
+        # private Redmine queries that answer 403 unauthenticated
+        run: ruby tools/preview-config queries.yaml > queries-preview.yaml
+
       - name: Run the backlogger action
         if: github.event.action != 'closed'
         # yamllint disable-line rule:line-length
         uses: openSUSE/backlogger@5e23a7ebc80a9cf18d3b23b85b77559588fb1da7  # main
         with:
-          config: queries.yaml
+          config: queries-preview.yaml
           redmine_api_key: ${{ secrets.REDMINE_API_KEY }}
           github_token: ${{ github.token }}
 
