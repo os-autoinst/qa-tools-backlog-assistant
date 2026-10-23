@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+require "kramdown"
+
+path = ARGV[0] || "index.md"
+abort "check-render: #{path} not found" unless File.exist?(path)
+
+text = File.read(path)
+html = path.end_with?(".html") ? text : Kramdown::Document.new(text, gfm_tables: true).to_html
+lines = html.lines
+
+PIPE_ROW = /\A\s*\|.*\|\s*\z/
+SEP_ROW = /\A\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*\z/
+
+groups = []
+current = nil
+lines.each_with_index do |line, i|
+  if PIPE_ROW.match?(line)
+    current ||= { first: i + 1, last: i + 1, rows: [] }
+    current[:last] = i + 1
+    current[:rows] << line.rstrip
+  else
+    groups << current if current
+    current = nil
+  end
+end
+groups << current if current
+
+leaks = groups.select do |g|
+  g[:rows].any? { |row| SEP_ROW.match?(row) } || g[:rows].length >= 2
+end
+
+if leaks.empty?
+  puts "check-render: #{path} renders without a leaked GFM table"
+  exit
+end
+
+warn "check-render: FAILED - #{path} keeps #{leaks.length} GFM table(s) as raw pipe rows in the output HTML, " \
+     "so the deployed page shows them literally (markdown is not parsed inside <details>):"
+leaks.each do |g|
+  opener = lines[[g[:first] - 12, 0].max...g[:first] - 1].reverse.detect { |l| l.include?("<summary>") || l.include?("<details>") }
+  summary = opener[%r{(?<=<summary>).*?(?=</summary>)}]&.gsub("&gt;", ">")&.gsub("&lt;", "<")&.gsub("&amp;", "&")&.strip
+  where = if summary
+    "inside <details> #{summary}"
+  elsif opener
+    "inside <details>"
+  else
+    "in the document body"
+  end
+  header = g[:rows].first.gsub("&gt;", ">").gsub("&lt;", "<").gsub("&amp;", "&")
+  warn "  #{where} at rendered lines #{g[:first]}-#{g[:last]}: header #{header.inspect} (#{g[:rows].length} raw rows)"
+end
+exit 1

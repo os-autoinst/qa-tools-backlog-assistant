@@ -60,6 +60,9 @@ queries:
     query: query_id=505
     max: 12
     min: 1
+    # Redmine redirects unauthenticated requests for this private query to
+    # /oic/login (403), so the PR preview build drops it via tools/preview-config
+    private: true
   - title: In Feedback
     query: query_id=520
     max: 12

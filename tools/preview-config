@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require "yaml"
+
+path = ARGV[0] || "queries.yaml"
+abort "preview-config: #{path} not found" unless File.exist?(path)
+
+config = YAML.load_file(path)
+config["queries"] = config["queries"].reject { |query| query["private"] }
+puts YAML.dump(config)
