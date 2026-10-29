@@ -1,1 +1,1 @@
-{"bad_queries": {"SLO high (<1 week)": {"url": "https://progress.opensuse.org/issues?query_id=827", "issue_count": 1, "limits": "<1"}}, "updated": "2026-10-28T23:22:13.745237+00:00"}
+{"bad_queries": {"SLO high (<1 week)": {"url": "https://progress.opensuse.org/issues?query_id=827", "issue_count": 2, "limits": "<1"}, "In Feedback": {"url": "https://progress.opensuse.org/issues?query_id=520", "issue_count": 13, "limits": "<13"}}, "updated": "2026-10-29T02:33:48.977214+00:00"}
