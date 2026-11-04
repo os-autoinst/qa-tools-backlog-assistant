@@ -1,1 +1,1 @@
-{"bad_queries": {}, "updated": "2026-11-04T08:02:08.701321+00:00"}
+{"bad_queries": {"SLA no imm/urg blocked": {"url": "https://progress.opensuse.org/issues?query_id=821", "issue_count": 1, "limits": "<1"}}, "updated": "2026-11-04T16:11:35.149416+00:00"}
