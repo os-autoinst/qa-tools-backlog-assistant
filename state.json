@@ -1,1 +1,1 @@
-{"bad_queries": {"Workable Dev Backlog": {"url": "https://progress.opensuse.org/issues?query_id=1192", "issue_count": 3, "limits": "<21, >3"}}, "updated": "2026-11-18T23:27:32.127675+00:00"}
+{"bad_queries": {"Workable Dev Backlog": {"url": "https://progress.opensuse.org/issues?query_id=1192", "issue_count": 3, "limits": "<21, >3"}, "SLO high (<1 week)": {"url": "https://progress.opensuse.org/issues?query_id=827", "issue_count": 2, "limits": "<1"}}, "updated": "2026-11-19T04:19:30.874387+00:00"}
