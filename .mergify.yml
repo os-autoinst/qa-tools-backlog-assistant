@@ -3,6 +3,19 @@ merge_queue:
   status_comments: none
   queue_controls_comment: false
 pull_request_rules:
+  - name: automatic merge
+    conditions:
+      - "#approved-reviews-by>=2"
+      - "#changes-requested-reviews-by=0"
+      # https://doc.mergify.io/examples.html#require-all-requested-reviews-to-be-approved
+      - "#review-requested=0"
+      - -label~=^acceptance-tests-needed|not-ready
+      - base=main
+      - "#check-failure=0"
+      - "#check-pending=0"
+    actions:
+      merge:
+        method: merge
   - name: automatic merge for dependabot updates
     conditions:
       - base=main
