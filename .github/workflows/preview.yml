@@ -37,8 +37,9 @@ jobs:
         if: github.event.action != 'closed'
         # yamllint disable-line rule:line-length
         run: |
-          export GEM_HOME="$RUNNER_CACHE_DIR/gems"
-          gem install --no-executables kramdown
+          export GEM_HOME="${RUNNER_TEMP:-/tmp}/gems"
+          export PATH="$GEM_HOME/bin:$PATH"
+          gem install --no-document kramdown
           ruby tools/check-render index.md
           ruby tools/check-render gh-pages/index.html
 
