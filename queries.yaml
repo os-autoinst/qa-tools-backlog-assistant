@@ -70,7 +70,8 @@ queries:
     repos:
       - os-autoinst/openQA
       - os-autoinst/os-autoinst
-      - os-autoinst/scripts
+      - os-autoinst/os-autoinst-scripts
+      - os-autoinst/openqa-logwarn
       - os-autoinst/os-autoinst-distri-openQA
       - os-autoinst/openqa-trigger-from-obs
       - os-autoinst/openqa_review
