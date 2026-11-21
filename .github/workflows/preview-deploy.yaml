@@ -1,0 +1,85 @@
+---
+name: Backlog Limits Checker Deploy
+concurrency: preview-deploy-${{ github.ref }}
+# yamllint disable-line rule:truthy
+on:
+  workflow_run:
+    workflows: ["Backlog Limits Checker Build"]
+    types:
+      - completed
+jobs:
+  backlogger_preview_deploy:
+    runs-on: ubuntu-latest
+    # yamllint disable-line rule:line-length
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
+    steps:
+      # yamllint disable-line rule:line-length
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Download PR info
+        # yamllint disable-line rule:line-length
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          name: pr-info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: pr-info
+
+      - name: Read PR info
+        id: pr-info
+        run: |
+          echo "number=$(cat pr-info/pr-number)" >> "$GITHUB_OUTPUT"
+          echo "action=$(cat pr-info/pr-action)" >> "$GITHUB_OUTPUT"
+
+      - name: Download preview artifact
+        if: steps.pr-info.outputs.action != 'closed'
+        # yamllint disable-line rule:line-length
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          name: preview-artifact
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: gh-pages
+
+      - name: Deploy Preview
+        id: preview-step
+        # yamllint disable-line rule:line-length
+        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9  # v1
+        with:
+          source-dir: gh-pages
+          # yamllint disable-line rule:line-length
+          action: ${{ steps.pr-info.outputs.action == 'closed' && 'remove' || 'deploy' }}
+          pr-number: ${{ steps.pr-info.outputs.number }}
+          comment: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on PR (deploy)
+        if: steps.pr-info.outputs.action != 'closed'
+        # yamllint disable-line rule:line-length
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88  # v2
+        with:
+          header: pr-preview
+          number: ${{ steps.pr-info.outputs.number }}
+          # yamllint disable rule:line-length
+          message: |
+            [PR Preview Action](https://github.com/rossjrw/pr-preview-action) ${{ steps.preview-step.outputs.action-version }}
+            :---:
+            | <p><img src="https://qr.rossjrw.com/?url=${{ steps.preview-step.outputs.preview-url }}" height="100" align="right" alt="QR code for preview link"></p> :rocket: View preview at <br> ${{ steps.preview-step.outputs.preview-url }} <br><br>
+            | <h6>Built to branch [`gh-pages`](https://github.com/os-autoinst/qa-tools-backlog-assistant/tree/gh-pages) at ${{ steps.preview-step.outputs.action-start-time }}. <br> Preview will be ready when the [GitHub Pages deployment](https://github.com/os-autoinst/qa-tools-backlog-assistant/deployments) is complete. <br><br> [![Pages Deployment Status](https://github.com/os-autoinst/qa-tools-backlog-assistant/actions/workflows/pages-build-deployment/badge.svg)](https://github.com/os-autoinst/qa-tools-backlog-assistant/deployments) <br></h6>
+          # yamllint enable rule:line-length
+
+      - name: Comment on PR (remove)
+        if: steps.pr-info.outputs.action == 'closed'
+        # yamllint disable-line rule:line-length
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88  # v2
+        with:
+          header: pr-preview
+          number: ${{ steps.pr-info.outputs.number }}
+          # yamllint disable rule:line-length
+          message: |
+            [PR Preview Action](https://github.com/rossjrw/pr-preview-action) ${{ steps.preview-step.outputs.action-version }}
+            :---:
+            Preview removed because the pull request was closed.
+            ${{ steps.preview-step.outputs.action-start-time }}
+          # yamllint enable rule:line-length
