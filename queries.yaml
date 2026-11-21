@@ -77,6 +77,14 @@ queries:
       - os-autoinst/openqa_review
       - os-autoinst/openqa_bugfetcher
       - os-autoinst/baremetal_support
+      - os-autoinst/openqa-mon
+      - os-autoinst/os-autoinst-common
+      - os-autoinst/openQA-python-client
+      - os-autoinst/os-autoinst-wheel-boot
+      - os-autoinst/os-autoinst-wheel-launcher
+      - os-autoinst/review-assistant
+      - os-autoinst/o3-config
+      - os-autoinst/os-autoinst-distri-example
       - openSUSE/Mojo-IOLoop-ReadWriteProcess
       - openSUSE/mtui
       - openSUSE/qem-bot
@@ -84,5 +92,6 @@ queries:
       - openSUSE/qem-dashboard
       - openSUSE/openSUSE-release-tools
       - openSUSE/git-sha-verify
+      - openSUSE/autoupdate-perl
     stale_days: 7
     max: 0
